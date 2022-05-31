@@ -132,11 +132,9 @@ body {
 	-webkit-transition-property: border;
 	-o-transition-property: border;
 	transition-property: border;
-
 	-webkit-transition-duration: 0.2s;
     -o-transition-duration: 0.2s;
     transition-duration: 0.2s;
-
 	border: 1px solid var(--red);
 }
 
