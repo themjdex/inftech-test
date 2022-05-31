@@ -499,6 +499,12 @@ function getFileContent(fileName, tree) {
 	}
 };
 
+/**
+ * Функция перезаписывает файл при сохранении
+ * @param {string} title Название файла, которое перезаписывается
+ * @param {string} text Новый текст
+ * @param {object} tree Получаемый объект дерева с иерархической вложенностью
+ */
 function overrideFile(title, text, tree) {
 	if (typeof tree !== 'object')
 		return false;
