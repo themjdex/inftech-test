@@ -6,13 +6,25 @@ import { data, state } from '../store/fake-data.js';
 document.addEventListener('DOMContentLoaded', render);
 
 /**
+ * Пример функции получения данных с сервера. Указано только в качестве демонстрации, в работе не используется
+ */
+async function prerender() {
+	let data = await fetch('https://inftech-test-api/...');
+	if (data.ok) {
+		// работаем дальше
+	} else {
+		console.log('Что-то пошло не так ' + data.status)
+	}
+};
+
+/**
  * Функция перерисовывает генерируемные программно части HTML-документа
  */
 function render() {
 	createTree('.file-tree', data);
 	hideOrShowMenu();
 	changeDescription();
-}
+};
 
 /**
  * Функция создания дерева папок
@@ -21,7 +33,7 @@ function render() {
  */
 function createTree(container, obj) {
 	document.querySelector(container).append(createUl(obj));
-}
+};
 
 /**
  * Функция строит вложенный список `<ul></ul>` и классово разделяет папки и файлы
@@ -44,7 +56,7 @@ function createUl(obj) {
 		ul.append(li);
 	}
 	return ul;
-}
+};
 
 /**
  * Функция отвечает за сворачивание и разворачивание папок
@@ -229,7 +241,7 @@ function findDescription(file) {
 			return state.descriptions[i];
 		}
 	}
-}
+};
 
 /**
  * Функция изменения описания файла при сохранении файла
@@ -392,7 +404,7 @@ function findAndRenameFileOrFolder(tree, file, name) {
 			findAndRenameFileOrFolder(tree[i], file, name)
 		}
 	}
-}
+};
 
 /**
  * Функция вставки нового элемента в дерево
@@ -428,7 +440,7 @@ function putNewPositionInTree(type, nodeName, tree, title, content = '') {
 		}
 		return true;
 	}
-}
+};
 
 /**
  * Обработчик клика на загрузку файла и работа с модальным окном
@@ -527,4 +539,4 @@ function overrideFile(title, text, tree) {
 			overrideFile(title, text, tree[i]);
 		}
 	}
-}
+};
