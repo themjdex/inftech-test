@@ -145,7 +145,7 @@ body {
 	border-radius: 5px;
 	text-align: center;
 	color: var(--light-black);
-	background: var(--light-gray);
+	background: var(--white);
 	-webkit-box-shadow: 0px 6px 9px -1px rgba(0, 0, 0, 0.5);
 	box-shadow: 0px 6px 9px -1px rgba(0, 0, 0, 0.5);
 	font-size: 12px;
@@ -153,6 +153,11 @@ body {
 
 .folder::before {
 	content: url('../img/open-folder.png');
+	margin-right: 5px;
+}
+
+.close-folder::before {
+	content: url('../img/folder.png');
 	margin-right: 5px;
 }
 

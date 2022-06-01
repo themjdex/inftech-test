@@ -34,11 +34,7 @@ function createUl(obj) {
 	let ul = document.createElement('ul');
 	for (let key in obj) {
 		let li = document.createElement('li');
-		if (typeof (obj[key]) !== 'object') {
-			li.textContent = key;
-		} else {
-			li.textContent = key;
-		}
+		li.textContent = key;
 		let childrenUl = createUl(obj[key]);
 		if (childrenUl) {
 			li.append(childrenUl)
@@ -73,21 +69,23 @@ function hideOrShowMenu() {
 			li.lastChild.classList.remove('show');
 		}
 	}
-	tree.onclick = (event) => {
-		if (event.target.tagName != 'SPAN') {
+	tree.onclick = (e) => {
+		if (e.target.tagName != 'SPAN') {
 			return;
 		}
-		let childrenContainer = event.target.parentNode.querySelector('ul');
+		let childrenContainer = e.target.parentNode.querySelector('ul');
 		if (!childrenContainer) {
 			return;
 		}
 		childrenContainer.hidden = !childrenContainer.hidden;
 		if (childrenContainer.hidden) {
-			event.target.classList.add('hide');
-			event.target.classList.remove('show');
+			e.target.classList.add('hide');
+			e.target.children[0].className = 'close-folder';
+			e.target.classList.remove('show');
 		} else {
-			event.target.classList.add('show');
-			event.target.classList.remove('hide');
+			e.target.classList.add('show');
+			e.target.children[0].className = 'folder';
+			e.target.classList.remove('hide');
 		}
 	}
 };
@@ -142,27 +140,40 @@ document.getElementById('deleteFile').addEventListener('click', () => {
 /**
  * Обработчик события выбора элемента дерева, который сохраняется в state приложения, с последующим открытием файла
  */
-document.querySelector('.file-tree').addEventListener('click', function (e) {
+document.querySelector('.file-tree').addEventListener('click', (e) => {
 	window.getSelection().selectAllChildren(e.target);
 	state.currentTarget = e.target.innerHTML.replace(/(\<(\/?[^>]+)>)/g, '');
 	if (checkSameTabs(state.currentTarget)) {
 		return;
 	} else {
 		readAndWriteText(data, state.currentTarget);
-		// state.currentTarget = '';
 	}
 });
 
 /**
  * Обработчик события переименования папки или файла
  */
-document.getElementById('rename').addEventListener('click', function () {
+document.getElementById('rename').addEventListener('click', () => {
 	if (state.currentTarget == '') {
 		setWarning();
 	} else {
 		let newName = prompt('Введите новое название');
 		if (newName) {
 			findAndRenameFileOrFolder(data, state.currentTarget, newName);
+			let tabs = document.querySelectorAll('.file-title');
+			if (tabs.length > 0) {
+				for (let i of tabs) {
+					if (i.innerText === state.currentTarget) {
+						i.innerText = newName;
+					}
+				}
+				let areas = document.querySelectorAll('.file-body');
+				for (let i of areas) {
+					if (i.id === state.currentTarget) {
+						i.id = newName;
+					}
+				}
+			}
 			document.querySelector('.file-tree').innerHTML = '';
 			render();
 		}
@@ -437,8 +448,8 @@ span.onclick = () => {
 	modal.style.display = 'none';
 };
 
-window.onclick = (event) => {
-	if (event.target == modal) {
+window.onclick = (e) => {
+	if (e.target == modal) {
 		modal.style.display = 'none';
 	}
 };
